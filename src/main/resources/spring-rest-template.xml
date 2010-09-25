@@ -10,13 +10,22 @@
  
  
  <bean id="rest" class="rest.MainPost"/>
- 
+
+ <oxm:jaxb2-marshaller id="jaxbMarshaller">
+        <oxm:class-to-be-bound name="rest.reply.PaypalFailure"/>
+        <oxm:class-to-be-bound name="rest.reply.PayResponse"/>
+    </oxm:jaxb2-marshaller>
+
+    <bean id="jax" class="rest.reply.OXMapperImpl">
+        <property name="marshaller" ref="jaxbMarshaller"/>
+        <property name="unmarshaller" ref="jaxbMarshaller"/>
+    </bean>
  
  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters">
             <list>
                 <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/>
-                <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+                <bean class="rest.reply.PaypalReplyHttpConvertor"/>
             </list>
         </property>
     </bean>
